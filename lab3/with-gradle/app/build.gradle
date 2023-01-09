@@ -1,0 +1,18 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'Main'
+}
+
+task fatJar(type: Jar) {
+    dependsOn tasks.build
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+    archiveBaseName = 'fatlab'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
